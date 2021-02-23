@@ -6,6 +6,7 @@ using Printf
 using StatsBase
 using Random
 using ResumableFunctions
+using StatsPlots
 
 function cities(n::Int; seed::Int=123, width::Int=999, height::Int=666)
     Random.seed!(seed);
@@ -35,7 +36,7 @@ end
 
 
 function plot_tour(tour)
-    p = plot()
+    p = plot(size = (1000,700))
 #    p = plot(tour[3:length(tour)], seriestype=:scatter, label = "")
 #    plot!(p, tour[[1]], seriestype=:scatter, label="", color="red")
 #    plot!(p, tour[[2]], seriestype=:scatter, label="", color="green")
@@ -274,8 +275,6 @@ function improve_divide_tsp(cities; n=6)
 end
 
 
-plot(us_cities, seriestype=:scatter)
-
 do_algorithm(improve_nn_tsp, us_cities)
 do_algorithm(rep_improve_nn_tsp, us_cities)
 do_algorithm(improve_greedy_tsp, us_cities)
@@ -361,7 +360,6 @@ function TestSuite(n, k; cities=us_cities, seed=42::Int)
     return [sample(cities, k, replace=false) for i in 1:n]
 end
 
-TestSuite(10, 200, cities=us_cities)
 
 function benchmark(algorithm, tests; kwargs...)
     "Benchmark one TSP algorithm on a test suite; return ([tour_lengths], average_time)"
@@ -375,7 +373,7 @@ function benchmark(algorithm, tests; kwargs...)
     return times, lengths
 end
 
-using StatsPlots
+
 function boxplots(algorithms, tests)
     df = Vector{Float64}[]
     labels = []
@@ -392,7 +390,7 @@ function boxplots(algorithms, tests)
     end
     labels = hcat(labels...)
     df = hcat(df...)
-    p = boxplot(labels, df, leg=false)
+    p = boxplot(labels, df, leg=false, size=c(1000,700))
     display(p)
     return df
 end
