@@ -392,14 +392,16 @@ function boxplots(algorithms, tests)
     df = hcat(df...)
     p = boxplot(labels, df, leg=false, size=c(1000,700))
     display(p)
-    return df
 end
+
+
+basic = [greedy_tsp, rep_nn_tsp, divide_tsp, nn_tsp, mst_tsp]
+boxplots(basic, TestSuite(10, 200))
+
 
 improved = [improve_greedy_tsp, rep_improve_nn_tsp,
             improve_divide_tsp, improve_nn_tsp,
             imporve_mst_tsp]
-df = boxplots(improved, TestSuite(10, 200))
+boxplots(improved, TestSuite(10, 200))
 
 
-basic = [greedy_tsp, rep_nn_tsp, divide_tsp, nn_tsp, mst_tsp]
-df = boxplots(basic, TestSuite(10, 200))
